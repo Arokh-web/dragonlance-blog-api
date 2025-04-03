@@ -156,7 +156,7 @@ const requestHandler = async (req, res) => {
 
 // SERVER START HERE
 const server = http.createServer(requestHandler);
-const port = 5000;
+const port = process.env.PORT || 5000;
 server.listen(port, () =>
   console.log(`Server running at http://localhost:${port}/`)
 );
