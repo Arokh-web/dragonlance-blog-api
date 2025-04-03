@@ -122,7 +122,7 @@ const requestHandler = async (req, res) => {
             console.log("OPTIONS request successful.");
             return res.end("OPTIONS request successful.");
           } else {
-            res.writeHead(404);
+            res.statusCode = 400;
             return res.end();
           }
         } catch (error) {
