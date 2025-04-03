@@ -112,7 +112,7 @@ const requestHandler = async (req, res) => {
             console.log("Origin:", origin);
             if (allowedOrigins.includes(origin)) {
               res.writeHead(204, {
-                "Access-Control-Allow-Origin": `"${origin}"`,
+                "Access-Control-Allow-Origin": origin,
                 "Access-Control-Allow-Methods":
                   "GET, POST, PUT, DELETE, OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type, Authorization",
