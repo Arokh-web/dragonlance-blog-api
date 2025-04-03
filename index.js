@@ -100,17 +100,18 @@ const requestHandler = async (req, res) => {
         }
       case "OPTIONS":
         console.log(`OPTIONS request on ${url}`);
-        // OPTIONS -> (checks which methods are allowed on a specific endpoint; needs to be set manually; a methodMAP would be useful)
+        // OPTIONS -> (checks which methods are allowed on a specific endpoint; needs to be set manually; a methodMAP would be useful?) --> needed for cors-access
         const allowedOrigins = [
           "http://localhost:5173",
-          "https://dragonlance-blog-client.onrender.com/", "https://dragonlance-blog-api.onrender.com/"
+          "https://dragonlance-blog-client.onrender.com/",
+          "https://dragonlance-blog-api.onrender.com/",
         ];
         try {
           if (isUrlAccepted) {
             res.writeHead(204, {
               "Access-Control-Allow-Origin": `${allowedOrigins}`,
               "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-              "Access-Control-Allow-Headers": "Content-Type", "Authorization"
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
             });
             console.log("OPTIONS request successful.");
             res.end("OPTIONS request successful.");
