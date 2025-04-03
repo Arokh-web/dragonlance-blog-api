@@ -1,9 +1,6 @@
 import { createOrUpdateData } from "./creationHandler.js";
 
-// const allowedOrigins = [
-//   "http://localhost:5173",
-//   "https://dragonlance-blog-client.onrender.com/",
-// ];
+
 
 export const getHandler = async ({ req, res, url, client }) => {
   const parts = url.split("/").filter(Boolean);
