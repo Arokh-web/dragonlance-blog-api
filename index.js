@@ -108,9 +108,9 @@ const requestHandler = async (req, res) => {
           "https://dragonlance-blog-api.onrender.com",
         ];
         try {
+          const origin = req.headers.origin;
+          console.log("Origin:", origin);
           if (isUrlAccepted) {
-            const origin = req.headers.origin;
-            console.log("Origin:", origin);
             if (allowedOrigins.includes(origin)) {
               res.setHeader("Access-Control-Allow-Origin", origin);
               res.setHeader(
@@ -132,7 +132,7 @@ const requestHandler = async (req, res) => {
             return res.end("CORS origin not allowed");
           }
         } catch (error) {
-          res.statusCode = 500;
+          res.statusCode = 400;
           console.error("Error getting OPTIONS:", error.message);
           return res.end("Invalid URL.");
         }
