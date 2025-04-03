@@ -127,7 +127,6 @@ const requestHandler = async (req, res) => {
           console.log("Origin:", origin);
           if (isUrlAccepted) {
             if (allowedOrigins.includes(origin)) {
-             
               res.setHeader("Access-Control-Allow-Origin", "*");
               res.setHeader(
                 "Access-Control-Allow-Methods",
@@ -141,7 +140,7 @@ const requestHandler = async (req, res) => {
               // res.setHeader("Access-Control-Allow-Credentials", "true");
             }
             res.statusCode = 200;
-            console.log("OPTIONS request successful.");
+            // console.log("OPTIONS request successful.");
           } else {
             console.log("OPTIONS request not allowed.");
             res.statusCode = 403;
