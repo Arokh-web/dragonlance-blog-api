@@ -124,15 +124,15 @@ const requestHandler = async (req, res) => {
               return res.end("OPTIONS request successful.");
               // res.setHeader("Access-Control-Allow-Credentials", "true");
             }
-            res.statusCode = 200;
+            // res.statusCode = 200;
             console.log("OPTIONS request successful.");
           } else {
             console.log("OPTIONS request not allowed.");
-            res.statusCode = 403;
+            // res.statusCode = 403;
             return res.end("CORS origin not allowed");
           }
         } catch (error) {
-          res.statusCode = 400;
+          // res.statusCode = 400;
           console.error("Error getting OPTIONS:", error.message);
           return res.end("Invalid URL.");
         }
