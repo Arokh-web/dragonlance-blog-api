@@ -104,7 +104,6 @@ const requestHandler = async (req, res) => {
         try {
           if (isUrlAccepted) {
             res.writeHead(204, {
-              "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
               "Access-Control-Allow-Headers": "Content-Type",
             });
