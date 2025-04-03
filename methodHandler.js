@@ -1,7 +1,5 @@
 import { createOrUpdateData } from "./creationHandler.js";
 
-
-
 export const getHandler = async ({ req, res, url, client }) => {
   const parts = url.split("/").filter(Boolean);
   const tableName = parts[0]; // Extracting the table name from the URL
@@ -20,19 +18,12 @@ export const getHandler = async ({ req, res, url, client }) => {
     res.statusCode = 200;
 
     const result = await client.query(query.text, query.values);
-    const origin = req.headers.origin;
-
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
 
     console.info(`GET request on ${url} successfully!`);
     res.end(JSON.stringify(result.rows));
     return;
   } catch (error) {
-    res.statusCode = 500;
+    res.statusCode = 400;
     console.error(`Error fetching ${url}:`, error.message);
     res.end(`Error fetching ${url}:`, error.message);
   }
@@ -55,9 +46,9 @@ export const writeHandler = async ({ req, res, url, client }) => {
         client,
       });
 
-      res.statusCode = 201;
+      res.statusCode = 200;
     } catch (error) {
-      res.statusCode = 500;
+      res.statusCode = 400;
       console.error(`Error creating ${url}:`, error.message);
       res.end(`Error creating ${url}:`, error.message);
     }
@@ -78,15 +69,7 @@ export const deleteHandler = async ({ req, res, url, client }) => {
       `DELETE FROM ${tableName} WHERE id = $1 RETURNING *;`,
       [id]
     );
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader("Access-Control-Allow-Origin", origin);
-    }
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
+
     console.info(`DELETE request on ${url} successfully!`);
     res.statusCode = 200;
 
