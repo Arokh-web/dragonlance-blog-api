@@ -15,21 +15,8 @@ export const getHandler = async ({ req, res, url, client }) => {
 
   try {
     // GET -> request (folder with all created data per url or per id)
-    // Vor switch(...)
-    const origin = req.headers.origin;
-    const allowedOrigins = [
-      "http://localhost:5173",
-      "https://dragonlance-blog-client.onrender.com",
-      "https://dragonlance-blog-api.onrender.com",
-    ];
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader("Access-Control-Allow-Origin", origin);
-      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
-      res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS"
-      );
-    }
+    
+    
 
     res.statusCode = 200;
 

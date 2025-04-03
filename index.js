@@ -56,6 +56,21 @@ const requestHandler = async (req, res) => {
     const handlerData = { req, res, url, client };
     const errorMessage = `Bad Request: ${url} is not a valid URL.`; //errorMessage for use everywhere
 
+    const origin = req.headers.origin;
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://dragonlance-blog-client.onrender.com",
+      "https://dragonlance-blog-api.onrender.com",
+    ];
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+      );
+    }
+
     switch (method) {
       case "GET":
         console.log(`GET request on ${url}`);
