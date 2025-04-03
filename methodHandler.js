@@ -1,9 +1,9 @@
 import { createOrUpdateData } from "./creationHandler.js";
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://dragonlance-blog-client.onrender.com/",
-];
+// const allowedOrigins = [
+//   "http://localhost:5173",
+//   "https://dragonlance-blog-client.onrender.com/",
+// ];
 
 export const getHandler = async ({ req, res, url, client }) => {
   const parts = url.split("/").filter(Boolean);
@@ -24,9 +24,6 @@ export const getHandler = async ({ req, res, url, client }) => {
 
     const result = await client.query(query.text, query.values);
     const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader("Access-Control-Allow-Origin", origin);
-    }
 
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader(
