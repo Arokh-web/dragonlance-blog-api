@@ -51,6 +51,7 @@ const requestHandler = async (req, res) => {
 
   //   SWITCH for methods
   if (isMethodAccepted) {
+    console.log("Origin-Header:", req.headers.origin);
     // Desctructuring the request object for use in the handler functions
     const handlerData = { req, res, url, client };
     const errorMessage = `Bad Request: ${url} is not a valid URL.`; //errorMessage for use everywhere
