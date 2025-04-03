@@ -9,6 +9,7 @@ export const createOrUpdateData = async ({
   // DATA processing START
   const tableName = url.replace("/", "");
   console.log(`Creating entry for ${tableName}...`);
+
   const columns = Object.keys(parsed).filter((key) => key !== "id"); // filter out id if present
   const placeholders = columns
     .map((_, index) => `$${index + 1}`) //_ is a placeholder for the value
@@ -51,12 +52,12 @@ export const createOrUpdateData = async ({
     res.statusCode = 201;
     res.setHeader("Content-Type", "application/json");
     console.log(`Created entry in ${url} successfully:`, result.rows[0]);
-    res.end(
-      JSON.stringify({
-        message: `Created entry in ${url} successfully.`,
-        data: result.rows[0],
-      })
-    );
+
+    JSON.stringify({
+      message: `Created entry in ${url} successfully.`,
+      data: result.rows[0],
+    });
+    res.end();
 
     return;
   } catch (error) {
