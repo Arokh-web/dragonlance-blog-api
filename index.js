@@ -129,7 +129,7 @@ const requestHandler = async (req, res) => {
             if (allowedOrigins.includes(origin)) {
               // res.setHeader("Cache-Control", "no-cache");
               // res.setHeader();
-              res.setHeader("Access-Control-Allow-Origin", origin);
+              res.setHeader("Access-Control-Allow-Origin", "*");
               res.setHeader(
                 "Access-Control-Allow-Methods",
                 "GET, POST, PUT, DELETE, OPTIONS"
