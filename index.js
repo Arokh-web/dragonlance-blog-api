@@ -114,16 +114,15 @@ const requestHandler = async (req, res) => {
               "Access-Control-Allow-Headers": "Content-Type, Authorization",
             });
             console.log("OPTIONS request successful.");
-            res.end("OPTIONS request successful.");
-            return;
+            return res.end("OPTIONS request successful.");
           } else {
             res.writeHead("Error:", 404);
-            res.end(errorMessage);
+            return res.end(errorMessage);
           }
         } catch (error) {
           res.statusCode = 500;
           console.error("Error getting OPTIONS:", error.message);
-          res.end(errorMessage);
+          return res.end(errorMessage);
         }
 
         break;
