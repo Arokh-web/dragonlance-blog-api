@@ -112,6 +112,8 @@ const requestHandler = async (req, res) => {
           console.log("Origin:", origin);
           if (isUrlAccepted) {
             if (allowedOrigins.includes(origin)) {
+              // res.setHeader("Cache-Control", "no-cache");
+              // res.setHeader();
               res.setHeader("Access-Control-Allow-Origin", origin);
               res.setHeader(
                 "Access-Control-Allow-Methods",
@@ -119,7 +121,7 @@ const requestHandler = async (req, res) => {
               );
               res.setHeader(
                 "Access-Control-Allow-Headers",
-                "Content-Type, Authorization"
+                "Content-Type, Accept"
               );
               return res.end("OPTIONS request successful.");
               // res.setHeader("Access-Control-Allow-Credentials", "true");
