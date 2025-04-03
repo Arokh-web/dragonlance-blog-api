@@ -165,9 +165,9 @@ const requestHandler = async (req, res) => {
     }
   }
 
-  // Fallback: 404
-  res.statusCode = 404;
-  res.end("Not Found");
+  // // Fallback: 404
+  // res.statusCode = 404;
+  // res.end("Not Found");
 };
 
 // SERVER START HERE
