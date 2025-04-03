@@ -121,11 +121,11 @@ const requestHandler = async (req, res) => {
                 "Access-Control-Allow-Headers",
                 "Content-Type, Authorization"
               );
+              return res.end("OPTIONS request successful.");
               // res.setHeader("Access-Control-Allow-Credentials", "true");
             }
             res.statusCode = 200;
             console.log("OPTIONS request successful.");
-            return res.end("OPTIONS request successful.");
           } else {
             console.log("OPTIONS request not allowed.");
             res.statusCode = 403;
