@@ -103,14 +103,15 @@ const requestHandler = async (req, res) => {
         // OPTIONS -> (checks which methods are allowed on a specific endpoint; needs to be set manually; a methodMAP would be useful?) --> needed for cors-access
         const allowedOrigins = [
           "http://localhost:5173",
-          "https://dragonlance-blog-client.onrender.com/",
-          "https://dragonlance-blog-api.onrender.com/",
+          "https://dragonlance-blog-client.onrender.com",
+          "https://dragonlance-blog-api.onrender.com",
         ];
         try {
           if (isUrlAccepted) {
             const origin = req.headers.origin;
+            console.log("Origin:", origin);
             if (allowedOrigins.includes(origin)) {
-              res.setHeader("Access-Control-Allow-Origin", origin);
+              res.setHeader("Access-Control-Allow-Origin": `${origin}`);
             }
             res.writeHead(204, {
               "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -128,15 +129,15 @@ const requestHandler = async (req, res) => {
           return res.end();
         }
 
-      case "PATCH":
-        console.log(`PATCH request on ${url}`);
-        break;
-      case "HEAD":
-        console.log(`HEAD request on ${url}`);
-        break;
+      // case "PATCH":
+      //   console.log(`PATCH request on ${url}`);
+      //   break;
+      // case "HEAD":
+      //   console.log(`HEAD request on ${url}`);
+      //   break;
       default:
         res.statusCode = 405;
-        res.end(errorMessage);
+        res.end();
         break;
     }
   }
