@@ -158,7 +158,7 @@ const requestHandler = async (req, res) => {
 const server = http.createServer(requestHandler);
 const port = process.env.PORT || 5000;
 server.listen(port, () =>
-  console.log(`Server running at http://localhost:${port}/`)
+  console.log(`Server running at ${import.meta.env.PGHOST} on port ${port}`)
 );
 server.on("error", (err) => {
   console.error("Server error:", err.message);

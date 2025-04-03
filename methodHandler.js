@@ -1,5 +1,9 @@
-import { table } from "console";
 import { createOrUpdateData } from "./creationHandler.js";
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://dragonlance-blog-client.onrender.com/",
+];
 
 export const getHandler = async ({ req, res, url, client }) => {
   const parts = url.split("/").filter(Boolean);
@@ -19,9 +23,17 @@ export const getHandler = async ({ req, res, url, client }) => {
     res.statusCode = 200;
 
     const result = await client.query(query.text, query.values);
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+    }
+
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
+
     console.info(`GET request on ${url} successfully!`);
     res.end(JSON.stringify(result.rows));
     return;
@@ -48,6 +60,7 @@ export const writeHandler = async ({ req, res, url, client }) => {
         parsed,
         client,
       });
+
       res.statusCode = 201;
     } catch (error) {
       res.statusCode = 500;
@@ -57,7 +70,7 @@ export const writeHandler = async ({ req, res, url, client }) => {
   });
 };
 
-export const deleteHandler = async ({ res, url, client }) => {
+export const deleteHandler = async ({ req, res, url, client }) => {
   const parts = url.split("/").filter(Boolean);
   const tableName = parts[0];
   const id = parts[1];
@@ -71,8 +84,15 @@ export const deleteHandler = async ({ res, url, client }) => {
       `DELETE FROM ${tableName} WHERE id = $1 RETURNING *;`,
       [id]
     );
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+    }
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
     console.info(`DELETE request on ${url} successfully!`);
     res.statusCode = 200;
 
