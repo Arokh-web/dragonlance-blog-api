@@ -135,20 +135,6 @@ const requestHandler = async (req, res) => {
     }
   }
 
-  //Fallbacks when the URL is not found
-  // if (singlePostRegex.test(url)) {
-  //   if (method === "GET") {
-  //     return console.log(`GET request on ${url}`);
-  //   }
-  //   if (method === "PUT") {
-  //     return console.log(`PUT request on ${url}`);
-  //   }
-  //   if (method === "DELETE") {
-  //     return console.log(`DELETE request on ${url}`);
-  //   }
-  //   return console.log("Invalid method");
-  // }
-
   // Fallback: 404
   res.statusCode = 404;
   res.end("Not Found");
@@ -158,7 +144,7 @@ const requestHandler = async (req, res) => {
 const server = http.createServer(requestHandler);
 const port = process.env.PORT || 5000;
 server.listen(port, () =>
-  console.log(`Server running at ${import.meta.env.PGHOST} on port ${port}`)
+  console.log(`Server running at ${process.env.PGHOST} on port ${port}`)
 );
 server.on("error", (err) => {
   console.error("Server error:", err.message);
