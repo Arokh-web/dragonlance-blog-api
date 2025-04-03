@@ -108,8 +108,11 @@ const requestHandler = async (req, res) => {
         ];
         try {
           if (isUrlAccepted) {
+            const origin = req.headers.origin;
+            if (allowedOrigins.includes(origin)) {
+              res.setHeader("Access-Control-Allow-Origin", origin);
+            }
             res.writeHead(204, {
-              "Access-Control-Allow-Origin": `${allowedOrigins}`,
               "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
               "Access-Control-Allow-Headers": "Content-Type, Authorization",
             });
@@ -117,15 +120,14 @@ const requestHandler = async (req, res) => {
             return res.end("OPTIONS request successful.");
           } else {
             res.writeHead("Error:", 404);
-            return res.end(errorMessage);
+            return res.end();
           }
         } catch (error) {
           res.statusCode = 500;
           console.error("Error getting OPTIONS:", error.message);
-          return res.end(errorMessage);
+          return res.end();
         }
 
-        break;
       case "PATCH":
         console.log(`PATCH request on ${url}`);
         break;
@@ -134,7 +136,7 @@ const requestHandler = async (req, res) => {
         break;
       default:
         res.statusCode = 405;
-        res.end("Method Not Allowed");
+        res.end(errorMessage);
         break;
     }
   }
