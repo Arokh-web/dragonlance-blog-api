@@ -111,16 +111,18 @@ const requestHandler = async (req, res) => {
             const origin = req.headers.origin;
             console.log("Origin:", origin);
             if (allowedOrigins.includes(origin)) {
-              res.setHeader("Access-Control-Allow-Origin": `${origin}`);
+              res.writeHead(204, {
+                "Access-Control-Allow-Origin": `"${origin}"`,
+                "Access-Control-Allow-Methods":
+                  "GET, POST, PUT, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization",
+              });
             }
-            res.writeHead(204, {
-              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-              "Access-Control-Allow-Headers": "Content-Type, Authorization",
-            });
+
             console.log("OPTIONS request successful.");
             return res.end("OPTIONS request successful.");
           } else {
-            res.writeHead("Error:", 404);
+            res.writeHead(404);
             return res.end();
           }
         } catch (error) {
