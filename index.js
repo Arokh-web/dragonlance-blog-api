@@ -123,17 +123,18 @@ const requestHandler = async (req, res) => {
               );
               // res.setHeader("Access-Control-Allow-Credentials", "true");
             }
-
+            res.statusCode = 200;
             console.log("OPTIONS request successful.");
             return res.end("OPTIONS request successful.");
           } else {
-            res.statusCode = 400;
-            return res.end();
+            console.log("OPTIONS request not allowed.");
+            res.statusCode = 403;
+            return res.end("CORS origin not allowed");
           }
         } catch (error) {
           res.statusCode = 500;
           console.error("Error getting OPTIONS:", error.message);
-          return res.end();
+          return res.end("Invalid URL.");
         }
 
       // case "PATCH":
