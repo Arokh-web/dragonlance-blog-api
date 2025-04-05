@@ -127,7 +127,7 @@ const requestHandler = async (req, res) => {
           console.log("Origin:", origin);
           if (isUrlAccepted) {
             if (allowedOrigins.includes(origin)) {
-              res.setHeader("Access-Control-Allow-Origin", "*");
+              res.setHeader("Access-Control-Allow-Origin", origin);
               res.setHeader(
                 "Access-Control-Allow-Methods",
                 "GET, POST, PUT, DELETE, OPTIONS"
@@ -137,7 +137,6 @@ const requestHandler = async (req, res) => {
                 "Content-Type, Accept"
               );
               return res.end("OPTIONS request successful.");
-              // res.setHeader("Access-Control-Allow-Credentials", "true");
             }
             res.statusCode = 200;
             // console.log("OPTIONS request successful.");
