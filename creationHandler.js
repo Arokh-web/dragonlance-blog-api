@@ -12,43 +12,35 @@ export const createOrUpdateData = async ({
 
   // LOGIN CHECK FROM HERE
   if (url === "/users/login") {
+    const { email, password_hash } = parsed;
     try {
-      let body = "";
-      req.on("data", (chunk) => {
-        body += chunk;
-      });
+      // Check if email and password_hash are provided
+      const result = await client.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+      );
+      const user = result.rows[0];
 
-      req.on("end", async () => {
-        const parsed = JSON.parse(body);
-        const { email, password_hash } = parsed;
+      if (!user) {
+        res.statusCode = 401;
+        console.error("User not found:", email);
+        res.end(JSON.stringify({ error: "User not found" }));
+        return;
+      }
 
-        // Check if email and password_hash are provided
-        const result = await client.query(
-          "SELECT * FROM users WHERE email = $1",
-          [email]
-        );
-        const user = result.rows[0];
+      if (user.password_hash !== password_hash) {
+        res.statusCode = 401;
+        console.error("Incorrect password for user:", email);
+        res.end(JSON.stringify({ error: "Incorrect password" }));
+        return;
+      }
 
-        if (!user) {
-          res.statusCode = 401;
-          console.error("User not found:", email);
-          res.end(JSON.stringify({ error: "User not found" }));
-          return;
-        }
-
-        if (user.password_hash !== password_hash) {
-          res.statusCode = 401;
-          console.error("Incorrect password for user:", email);
-          res.end(JSON.stringify({ error: "Incorrect password" }));
-          return;
-        }
-
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify(user));
-      });
-    } catch (err) {
-      console.error("Login error:", err.message);
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(user));
+      return;
+    } catch (error) {
+      console.error("Login error:", error.message);
       res.statusCode = 500;
       res.end(JSON.stringify({ error: "Login failed", details: err.message }));
     }
