@@ -34,9 +34,11 @@ const requestHandler = async (req, res) => {
   ];
   const acceptedUrls = [
     "/posts",
+    "/posts/edit",
     "/users",
     "/users/login",
     "/users/logout",
+    "/edit",
     "/dragonlance_books",
     "/dragonlance_characters",
   ];
