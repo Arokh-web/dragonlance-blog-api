@@ -6,8 +6,8 @@ import {
   updatePost,
   deletePost,
 } from "../controllers/postController.js";
-import { validateSchema } from "../middlewares/validateSchema.js";
-import { postSchema } from "../schemas/postSchema.js";
+import  validateSchema  from "../middlewares/validateSchema.js";
+import  postSchema  from "../schemas/postSchema.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 const postRouter = Router();

@@ -25,4 +25,4 @@ const tryConnections = async () => {
   throw new Error("Unable to connect to any database.");
 };
 
-export default { tryConnections, sequelize };
+export { tryConnections, sequelize };

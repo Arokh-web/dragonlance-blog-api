@@ -1,6 +1,3 @@
-import { sequelize } from "../db/index_db.js";
-import { DataTypes } from "sequelize";
-
 const Post = (sequelize, DataTypes) => {
   return sequelize.define(
     "Post",

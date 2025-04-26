@@ -5,9 +5,9 @@ import {
   createBook,
   updateBook,
   deleteBook,
-} from "../controllers/booksController.js";
-import { validateSchema } from "../middlewares/validateSchema.js";
-import { bookSchema } from "../schemas/bookSchema.js";
+} from "../controllers/bookController.js";
+import  validateSchema  from "../middlewares/validateSchema.js";
+import  bookSchema  from "../schemas/bookSchema.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 const booksRouter = Router();
@@ -18,11 +18,11 @@ const booksRouter = Router();
 
 booksRouter
   .route("/")
-  .get(asyncHandler(getAllBooks))
+  .get(getAllBooks)
   .post(validateSchema(bookSchema), asyncHandler(createBook));
 booksRouter
   .route("/:id")
-  .get(asyncHandler(getBookById))
+  .get(getBookById)
   .put(validateSchema(bookSchema), asyncHandler(updateBook))
   .delete(asyncHandler(deleteBook));
 

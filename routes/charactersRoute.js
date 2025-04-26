@@ -1,13 +1,13 @@
 import { Router } from "express";
 import {
-  getCharacters,
+  getAllCharacters,
   getCharacterById,
   createCharacter,
   updateCharacter,
   deleteCharacter,
-} from "../controllers/charactersController.js";
-import { validateSchema } from "../middlewares/validateSchema.js";
-import { characterSchema } from "../schemas/characterSchema.js";
+} from "../controllers/characterController.js";
+import validateSchema from "../middlewares/validateSchema.js";
+import characterSchema from "../schemas/characterSchema.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 const charactersRouter = Router();
@@ -18,7 +18,7 @@ const charactersRouter = Router();
 
 charactersRouter
   .route("/")
-  .get(getCharacters)
+  .get(getAllCharacters)
   .post(validateSchema(characterSchema), asyncHandler(createCharacter));
 charactersRouter
   .route("/:id")

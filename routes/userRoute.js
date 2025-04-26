@@ -6,8 +6,8 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/userController.js";
-import { validateSchema } from "../middlewares/validateSchema.js";
-import { userSchema } from "../schemas/userSchema.js";
+import validateSchema from "../middlewares/validateSchema.js";
+import userSchema from "../schemas/userSchema.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 const usersRouter = Router();
