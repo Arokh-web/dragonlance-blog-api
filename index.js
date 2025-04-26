@@ -1,184 +1,44 @@
-import http from "http";
-import pg from "pg";
-import "dotenv/config";
-import { getHandler, writeHandler, deleteHandler } from "./methodHandler.js";
+import express from "express";
+import cors from "cors";
+import tryConnections from "./db/index_db.js";
+import errorHandler from "./middlewares/errorHandler.js";
+import dotenv from "dotenv";
 
-//CONNECTION TO DB STARTS HERE
-const { Client } = pg;
-const client = new Client();
+// importing routes
+import usersRouter from "./routes/userRoute.js";
+import booksRouter from "./routes/booksRoute.js";
+import charactersRouter from "./routes/charactersRoute.js";
+import postRouter from "./routes/postRoute.js";
 
-async function connectToDatabase() {
-  try {
-    await client.connect();
-    console.log("Connected to the database successfully.");
-  } catch (error) {
-    console.error("Error connecting to the database:", error.message);
-  }
-}
-// TEST CONNECTION
-connectToDatabase();
-//CONNECTION TO DB ENDS HERE
+dotenv.config();
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-const requestHandler = async (req, res) => {
-  const { method, url } = req;
+tryConnections()
+  .then(() => {
+    console.log("Database connection established successfully.");
+  })
+  .catch((error) => {
+    console.error("Error connecting to the database:", error);
+  });
 
-  // Accepted methods/URLs also fetchable from DB??
-  const acceptedMethods = [
-    "GET",
-    "POST",
-    "PUT",
-    "DELETE",
-    "OPTIONS",
-    "PATCH",
-    "HEAD",
-  ];
-  const acceptedUrls = [
-    "/posts",
-    "/posts/edit",
-    "/users",
-    "/users/login",
-    "/users/logout",
-    "/edit",
-    "/dragonlance_books",
-    "/dragonlance_characters",
-  ];
+// Setting up general express middleware
+app.use(express.static("uploads")); // Serve static files from the uploads directory for tryouts
+app.use(cors());
+app.use(express.json());
 
-  console.log(url);
+// Setting up routes; all of them are specific endpoints (follow-uzp-routes can be found in the respective route files)
+// app.use('/') Necessary??
+app.use("/dragonlance_books", booksRouter);
+app.use("/dragonlance_characters", charactersRouter);
+app.use("/posts", postRouter);
+app.use("/users", usersRouter);
 
-  const acceptedPath = acceptedUrls.map((link) => link.slice(1)).join("|"); // "posts|users|dragonlance_books|dragonlance_characters" for regex
-  const isExactMatch = new RegExp(`^\/(${acceptedPath})/?$`).test(url);
-  const singleUrlRegex = new RegExp(`^\/(${acceptedPath})\/[0-9a-zA-Z]+/?$`);
-
-  const isUrlAccepted = isExactMatch || singleUrlRegex.test(url); // true if url is in acceptedUrls or matches the regex
-  const isMethodAccepted = acceptedMethods.includes(method); // true if method is in acceptedMethods
-  // Accepted methods/URLs END
-
-  //   SWITCH for methods
-  if (isMethodAccepted) {
-    console.log("Origin-Header:", req.headers.origin);
-    // Desctructuring the request object for use in the handler functions
-    const handlerData = { req, res, url, client };
-    const errorMessage = `Bad Request: ${url} is not a valid URL.`; //errorMessage for use everywhere
-
-    const origin = req.headers.origin;
-    const allowedOrigins = [
-      "http://localhost:5173",
-      "https://dragonlance-blog-client.onrender.com",
-      "https://dragonlance-blog-api.onrender.com",
-    ];
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader("Access-Control-Allow-Origin", origin);
-      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
-      res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS"
-      );
-    }
-
-    switch (method) {
-      case "GET":
-        console.log(`GET request on ${url}`);
-        // GET -> request (folder with all created data per url)
-        if (isUrlAccepted) {
-          console.log(`GET request on ${url} accepted.`);
-          await getHandler(handlerData);
-          return;
-        } else {
-          res.statusCode = 400;
-          res.end(errorMessage);
-          return;
-        }
-
-      // POST and PUT in one!
-      case "POST":
-      case "PUT":
-        console.log(`${method} request on ${url}`);
-
-        // POST -> (create new data); PUT -> (update existing data); only creator or admin can do this
-        if (isUrlAccepted) {
-          console.log(`${method} request on ${url} accepted.`);
-          await writeHandler(handlerData);
-          return;
-        } else {
-          res.statusCode = 400;
-          res.end(errorMessage);
-          return;
-        }
-      // PUT -> /posts (update existing post; only creator or admin can do this)
-
-      case "DELETE":
-        console.log(`DELETE request on ${url}`);
-        // DELETE -> /posts (delete existing post; only creator or admin can do this)
-        if (isUrlAccepted) {
-          console.log(`${method} request on ${url} accepted.`);
-          await deleteHandler(handlerData);
-          return;
-        } else {
-          res.statusCode = 400;
-          res.end(errorMessage);
-          return;
-        }
-      case "OPTIONS":
-        console.log(`OPTIONS request on ${url}`);
-        // OPTIONS -> (checks which methods are allowed on a specific endpoint; needs to be set manually; a methodMAP would be useful?) --> needed for cors-access
-        const allowedOrigins = [
-          "http://localhost:5173",
-          "https://dragonlance-blog-client.onrender.com",
-          "https://dragonlance-blog-api.onrender.com",
-        ];
-        try {
-          const origin = req.headers.origin;
-          console.log("Origin:", origin);
-          if (isUrlAccepted) {
-            if (allowedOrigins.includes(origin)) {
-              res.setHeader("Access-Control-Allow-Origin", origin);
-              res.setHeader(
-                "Access-Control-Allow-Methods",
-                "GET, POST, PUT, DELETE, OPTIONS"
-              );
-              res.setHeader(
-                "Access-Control-Allow-Headers",
-                "Content-Type, Accept"
-              );
-              return res.end("OPTIONS request successful.");
-            }
-            res.statusCode = 200;
-            // console.log("OPTIONS request successful.");
-          } else {
-            console.log("OPTIONS request not allowed.");
-            res.statusCode = 403;
-            return res.end("CORS origin not allowed");
-          }
-        } catch (error) {
-          res.statusCode = 400;
-          console.error("Error getting OPTIONS:", error.message);
-          return res.end("Invalid URL.");
-        }
-
-      // case "PATCH":
-      //   console.log(`PATCH request on ${url}`);
-      //   break;
-      // case "HEAD":
-      //   console.log(`HEAD request on ${url}`);
-      //   break;
-      default:
-        res.statusCode = 405;
-        res.end();
-        break;
-    }
-  }
-
-  // // Fallback: 404
-  // res.statusCode = 404;
-  // res.end("Not Found");
-};
-
-// SERVER START HERE
-const server = http.createServer(requestHandler);
-const port = process.env.PORT || 5000;
-server.listen(port, () =>
-  console.log(`Server running at ${process.env.PGHOST} on port ${port}`)
-);
-server.on("error", (err) => {
-  console.error("Server error:", err.message);
+app.use("*", (req, res, next) => {
+  const error = new Error("Route not found");
+  error.statusCode = 404;
+  next(error);
 });
+
+app.use(errorHandler);
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
