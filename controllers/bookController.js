@@ -12,7 +12,7 @@ export const getBookById = async (req, res) => {
     include: db.Character,
   });
 
-  if (!book) throw new ErrorResponse("Post not found.", 404);
+  if (!book) throw new ErrorResponse("Book not found.", 404);
   res.json(book);
 };
 

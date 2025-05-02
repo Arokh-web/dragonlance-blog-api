@@ -29,7 +29,7 @@ export const updateCharacter = async (req, res) => {
   const { id } = req.params;
   const { name, description, image } = req.body;
 
-  const character = await Character.findByPk(id);
+  const character = await db.Character.findByPk(id);
 
   if (!character) throw new ErrorResponse("Character not found.", 404);
 

@@ -25,7 +25,8 @@ export const createPost = async (req, res) => {
   const post = await db.Post.create({
     title,
     content,
-    image,
+    cover,
+    date,
     author_id: userId,
   });
 
