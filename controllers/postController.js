@@ -20,7 +20,7 @@ export const getPostById = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const { title, content, image } = req.body;
-  const userId = req.user.id; 
+  const userId = req.user.id;
 
   const post = await db.Post.create({
     title,
@@ -61,13 +61,13 @@ export const deletePost = async (req, res) => {
   res.status(204).send();
 };
 
-export const getPostsByUserId = async (req, res) => {
-  const { userId } = req.params;
-  const posts = await db.Post.findAll({
-    where: { userId },
-    include: User,
-  });
+// export const getPostsByUserId = async (req, res) => {
+//   const { userId } = req.params;
+//   const posts = await db.Post.findAll({
+//     where: { userId },
+//     include: db.User,
+//   });
 
-  if (!posts) throw new ErrorResponse("No posts found for this user.", 404);
-  res.json(posts);
-};
+//   if (!posts) throw new ErrorResponse("No posts found for this user.", 404);
+//   res.json(posts);
+// };

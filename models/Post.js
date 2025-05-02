@@ -38,6 +38,7 @@ const Post = (sequelize, DataTypes) => {
     },
     {
       tableName: "posts",
+      timestamps: false,
     }
   );
 };

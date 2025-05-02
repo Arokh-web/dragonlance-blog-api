@@ -22,6 +22,7 @@ const Character = (sequelize, DataTypes) => {
     },
     {
       tableName: "dragonlance_characters",
+      timestamps: false,
     }
   );
 };

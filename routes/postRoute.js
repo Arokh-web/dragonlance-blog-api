@@ -6,8 +6,8 @@ import {
   updatePost,
   deletePost,
 } from "../controllers/postController.js";
-import  validateSchema  from "../middlewares/validateSchema.js";
-import  postSchema  from "../schemas/postSchema.js";
+import validateSchema from "../middlewares/validateSchema.js";
+import postSchema from "../schemas/postSchema.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 const postRouter = Router();
@@ -16,10 +16,13 @@ const postRouter = Router();
 // POST, PUT, DELETE, UPDATE need asyncHandler to handle errors properly
 // GET requests can be handled without asyncHandler
 
+// Methods to all: Get, Post
 postRouter
   .route("/")
   .get(getPosts)
   .post(validateSchema(postSchema), asyncHandler(createPost));
+
+// Methods by ID: Get, Put, Delete
 postRouter
   .route("/:id")
   .get(getPostById)

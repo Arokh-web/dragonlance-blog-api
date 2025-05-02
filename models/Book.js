@@ -31,6 +31,7 @@ const Book = (sequelize, DataTypes) => {
     },
     {
       tableName: "dragonlance_books",
+      timestamps: false,
     }
   );
 };

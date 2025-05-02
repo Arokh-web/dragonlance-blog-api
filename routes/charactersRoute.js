@@ -16,10 +16,13 @@ const charactersRouter = Router();
 // POST, PUT, DELETE, UPDATE need asyncHandler to handle errors properly
 // GET requests can be handled without asyncHandler
 
+// Methods to all: Get, Post
 charactersRouter
   .route("/")
   .get(getAllCharacters)
   .post(validateSchema(characterSchema), asyncHandler(createCharacter));
+
+// Methods by ID: Get, Put, Delete
 charactersRouter
   .route("/:id")
   .get(getCharacterById)

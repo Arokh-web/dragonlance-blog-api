@@ -3,7 +3,7 @@ import { db } from "../index.js";
 
 export const getUsers = async (req, res) => {
   const users = await db.User.findAll({
-    include: Post,
+    include: db.Post,
   });
   res.json(users);
 };

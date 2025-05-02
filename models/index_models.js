@@ -6,6 +6,7 @@ import Post from "./Post.js";
 import User from "./User.js";
 import Book from "./Book.js";
 import Character from "./Character.js";
+import BookCharacter from "./BookCharacter.js";
 import Comment from "./Comment.js";
 
 // Imports models and initializes them with the sequelize instance to be used
@@ -19,6 +20,7 @@ export const initModels = (sequelize) => {
   db.Book = Book(sequelize, DataTypes);
   db.Character = Character(sequelize, DataTypes);
   db.Comment = Comment(sequelize, DataTypes);
+  db.BookCharacter = BookCharacter(sequelize, DataTypes);
 
   return db;
 };

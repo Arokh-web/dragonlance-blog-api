@@ -2,25 +2,28 @@ import ErrorResponse from "../utils/ErrorResponse.js";
 import { db } from "../index.js";
 
 export const getAllBooks = async (req, res) => {
-  const books = await Book.findAll();
+  const books = await db.Book.findAll();
   res.json(books);
 };
 
 export const getBookById = async (req, res) => {
   const { id } = req.params;
-  const book = await Book.findByPk(id);
+  const book = await db.Book.findByPk(id, {
+    include: db.Character,
+  });
 
   if (!book) throw new ErrorResponse("Post not found.", 404);
   res.json(book);
 };
 
 export const createBook = async (req, res) => {
-  const { title, author, description, image } = req.body;
-  const book = await Book.create({
+  const { title, authors, description, cover, published_year } = req.body;
+  const book = await db.Book.create({
     title,
-    author,
+    authors,
     description,
-    image,
+    cover,
+    published_year,
   });
 
   res.status(201).json(book);
@@ -28,16 +31,17 @@ export const createBook = async (req, res) => {
 
 export const updateBook = async (req, res) => {
   const { id } = req.params;
-  const { title, author, description, image } = req.body;
+  const { title, authors, description, cover, published_year } = req.body;
 
-  const book = await Book.findByPk(id);
+  const book = await db.Book.findByPk(id);
 
   if (!book) throw new ErrorResponse("Book not found.", 404);
 
   book.title = title;
-  book.author = author;
+  book.authors = authors;
   book.description = description;
-  book.image = image;
+  book.cover = cover;
+  book.published_year = published_year;
 
   await book.save();
 
@@ -47,7 +51,7 @@ export const updateBook = async (req, res) => {
 export const deleteBook = async (req, res) => {
   const { id } = req.params;
 
-  const book = await Book.findByPk(id);
+  const book = await db.Book.findByPk(id);
 
   if (!book) throw new ErrorResponse("Book not found.", 404);
 

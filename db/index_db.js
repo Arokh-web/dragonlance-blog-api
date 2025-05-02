@@ -7,8 +7,8 @@ let sequelize = null;
 
 const tryConnections = async () => {
   const dbUrls = [
-    process.env.DATABASE_URL_local,
-    process.env.DATABASE_URL_render,
+    // process.env.DATABASE_URL_local,
+    // process.env.DATABASE_URL_render,
     process.env.DATABASE_URL_neon,
   ];
 

@@ -6,8 +6,8 @@ import {
   updateBook,
   deleteBook,
 } from "../controllers/bookController.js";
-import  validateSchema  from "../middlewares/validateSchema.js";
-import  bookSchema  from "../schemas/bookSchema.js";
+import validateSchema from "../middlewares/validateSchema.js";
+import bookSchema from "../schemas/bookSchema.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 const booksRouter = Router();
@@ -16,10 +16,13 @@ const booksRouter = Router();
 // POST, PUT, DELETE, UPDATE need asyncHandler to handle errors properly
 // GET requests can be handled without asyncHandler
 
+// Methods to all: Get, Post
 booksRouter
   .route("/")
   .get(getAllBooks)
   .post(validateSchema(bookSchema), asyncHandler(createBook));
+
+// Methods by ID: Get, Put, Delete
 booksRouter
   .route("/:id")
   .get(getBookById)

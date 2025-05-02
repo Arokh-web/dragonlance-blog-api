@@ -39,6 +39,7 @@ const User = (sequelize, DataTypes) => {
     },
     {
       tableName: "users",
+      timestamps: false,
     }
   );
 };

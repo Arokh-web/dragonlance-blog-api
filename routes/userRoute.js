@@ -16,10 +16,13 @@ const usersRouter = Router();
 // POST, PUT, DELETE, UPDATE need asyncHandler to handle errors properly
 // GET requests can be handled without asyncHandler
 
+// Methods to all: Get, Post
 usersRouter
   .route("/")
   .get(getUsers)
   .post(validateSchema(userSchema), asyncHandler(createUser));
+
+// Methods by ID: Get, Put, Delete
 usersRouter
   .route("/:id")
   .get(getUserById)
