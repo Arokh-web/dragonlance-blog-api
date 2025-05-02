@@ -5,8 +5,11 @@ const bookSchema = Joi.object({
     "string.empty": "Title of book is required",
   }),
   authors: Joi.array()
+    .items(Joi.string())
+    .min(1)
+    .required()
     .messages({
-      "string.empty": "Author/s of book is required",
+      "array.empty": "Authors of book is required",
     })
     .required(),
   description: Joi.string().min(3).max(1000).required().messages({

@@ -20,7 +20,7 @@ import joinBookCharRouter from "./routes/bookCharRoute.js";
 // Initializing App and DB
 dotenv.config();
 const app = express();
-const PORT = process.env.API_PORT;
+const PORT = process.env.API_PORT || 5000;
 let db;
 
 // Tries out all three possible db-connections and chooses the first one that works: local, render, neon
@@ -47,7 +47,7 @@ tryConnections()
     app.use("/posts", postRouter);
     app.use("/users", usersRouter);
     // app.use("/comments", commentRouter);
-    app.use("/bookchar", joinBookCharRouter); // TODO: Implement this route
+    app.use("/bookchar", joinBookCharRouter);
 
     app.use(errorHandler);
     app.listen(PORT, () =>

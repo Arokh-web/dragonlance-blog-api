@@ -7,10 +7,8 @@ import asyncHandler from "../utils/asyncHandler.js";
 
 const joinBookCharRouter = Router();
 
-joinBookCharRouter.route("/book/:id").get(asyncHandler(getAllCharsFromBook));
+joinBookCharRouter.route("/book/:id").get(getAllCharsFromBook);
 
-joinBookCharRouter
-  .route("/character/:id")
-  .get(asyncHandler(getAllBooksFromChar));
+joinBookCharRouter.route("/character/:id").get(getAllBooksFromChar);
 
 export default joinBookCharRouter;

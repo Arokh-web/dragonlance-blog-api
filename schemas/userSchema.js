@@ -20,7 +20,7 @@ const userSchema = Joi.object({
     .email()
     .pattern(new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
     .messages({
-      "string.empty": "EMail is required",
+      "string.empty": "E-Mail is required",
     })
     .required(),
   is_author: Joi.boolean().default(false),
